@@ -12,10 +12,10 @@ from langchain.chains import RetrievalQA
 load_dotenv()
 
 def load_document(file_path):
-    """
+    """""
     Factory function che sceglie il loader corretto in base all'estensione.
     Simile a un Service Provider in Symfony/Laravel.
-    """
+    """""
     ext = os.path.splitext(file_path)[1].lower()
     
     if ext == '.pdf':

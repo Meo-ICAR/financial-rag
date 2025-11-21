@@ -1,0 +1,35 @@
+# --- Sicurezza (CRITICO) ---
+.env
+.env.local
+
+# --- Virtual Environment (Mai committare, è come /vendor) ---
+venv/
+.venv/
+env/
+bin/
+lib/
+include/
+
+# --- Python Internals (Cache e Bytecode) ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Dati Locali (RAG & Ingestion) ---
+# Evita di caricare i documenti finanziari sensibili o di test su git
+*.pdf
+*.xml
+*.csv
+*.xlsx
+
+# --- Vector Stores Locali ---
+# Se salvi l'indice FAISS su disco, escludilo
+faiss_index/
+*.faiss
+*.pkl
+
+# --- IDE & OS ---
+.idea/
+.vscode/
+.DS_Store
