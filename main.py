@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 # Loaders specifici
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+# --- MODIFICA 1: Importa le classi Google invece di OpenAI ---
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 
@@ -63,12 +64,20 @@ def main():
 
     # 3. EMBEDDING & VECTOR STORE
     print("--- 2. Indicizzazione (Embedding) ---")
-    embeddings = OpenAIEmbeddings()
+# --- MODIFICA 2: Usa il modello di embedding di Google ---
+    # "models/embedding-001" è lo standard attuale
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vectorstore = FAISS.from_documents(splits, embeddings)
     retriever = vectorstore.as_retriever()
 
-    # 4. LLM & CHAIN
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+# 4. LLM (Gemini)
+    # --- MODIFICA 3: Usa Gemini 1.5 Flash ---
+    # È veloce, economico e ottimo per tasks analitici
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash", 
+        temperature=0,
+        convert_system_message_to_human=True # A volte necessario per compatibilità
+    )
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
